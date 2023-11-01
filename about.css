@@ -488,6 +488,7 @@ ul.actions.fit.stacked {
 	overflow: hidden;
 	position: relative;
 	width: 40%;
+	border: 3px solid #000;
 }
 
 .tiles article .image {
@@ -558,28 +559,21 @@ ul.actions.fit.stacked {
 }
 
 .tiles article:nth-child(6n - 5):before {
-	background-color: #6fc3df;
+	background-color: #164863;
 }
 
 .tiles article:nth-child(6n - 4):before {
-	background-color: #8d82c4;
+	background-color:#D2E3C8;
 }
 
 .tiles article:nth-child(6n - 3):before {
-	background-color: #ec8d81;
+	background-color: #D2E3C8;
 }
 
 .tiles article:nth-child(6n - 2):before {
-	background-color: #e7b788;
+	background-color:#164863;
 }
 
-.tiles article:nth-child(6n - 1):before {
-	background-color: #8ea9e8;
-}
-
-.tiles article:nth-child(6n):before {
-	background-color: #87c5a4;
-}
 
 @media screen and (max-width: 1280px) {
 	.tiles article {
