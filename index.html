@@ -19,7 +19,7 @@
         z-index: 9999;
       }
     </style>
-    <script src="script.js" defer></script>
+    <script src="script1.js" defer></script>
 </head>
 
 <body>
@@ -31,7 +31,7 @@
         <span id="close-menu-btn" class="material-symbols-outlined">close</span>
         <li><a href="#">Home</a></li>
         <li><a href="https://services.gst.gov.in/services/searchtp">Services</a></li>
-        <li><a href="pricing.html">Pricing</a></li>
+        <li><a href="./pricing.html">Pricing</a></li>
         <li><a href="about.html">About</a></li>
      <li><a href="./contact.html">Contact us</a></li>
         <li><a href="login.html">Login</a></li>
@@ -75,13 +75,11 @@
     const header = document.querySelector("header");
     const hamburgerBtn = document.querySelector("#hamburger-btn");
     const closeMenuBtn = document.querySelector("#close-menu-btn");
-
-   
+    const mainContent = document.getElementById("mainContent"); // Add this line
+  
     hamburgerBtn.addEventListener("click", () => header.classList.toggle("show-mobile-menu"));
-
-   
     closeMenuBtn.addEventListener("click", () => hamburgerBtn.click());
-   
+  
     function loadVideo() {
       var videoContainer = document.getElementById("videoContainer");
       var iframe = document.createElement("iframe");
@@ -93,13 +91,17 @@
       iframe.style.left = "0";
       iframe.style.border = "none";
       videoContainer.appendChild(iframe);
-
-      setTimeout(function () {
-        videoContainer.style.display = "none";
-        document.getElementById("mainContent").style.display = "block";
-      }, 5000); 
+  
+      // After the video has loaded and started playing, show the main content
+      iframe.addEventListener("load", function () {
+        setTimeout(function () {
+          videoContainer.style.display = "none";
+          mainContent.style.display = "block"; // Show the main content
+        }, 5000);
+      });
     }
     window.addEventListener('load', loadVideo);
   </script>
+  
 </body>
 </html>
