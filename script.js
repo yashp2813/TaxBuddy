@@ -7,16 +7,18 @@ const sendChatBtn = document.querySelector(".chat-input span");
 let userMessage = null;
 const API_KEY = "";
 const inputInitHeight = chatInput.scrollHeight;
+let keywordResponses = {};
 
-
-const predefinedResponses = {
-    "hi":"Hey,myself TaxBuddy ChatBot.\nI can help you with following requirements:\n1.GST Rate Information\n2.GST Calculator\n3.GST Filing Assistance\n4.GST Updates\n5.GST Documents",
-    "what is your name": "I am TaxBuddy ChatBot.",
-    "how are you today": "I'm just a computer program, so I don't have feelings, but I'm here to assist you!",
-    "what is gst" :"The Goods and Services Tax (GST) is a successor to VAT used in India on the supply of goods and services .GST is a digitalized form of VAT where you can also track the goods & services.",
-    "what can you do": "I can help you with following requirements:\n1.GST Rate Information\n2.GST Calculator\n3.GST Filing Assistance\n4.GST Updates\n5.GST Documents", 
-    "who is the principal of tsec":"Respected Dr. G. T. Thampi",
+const loadResponses = async () => {
+    try {
+        const response = await fetch("responses.json");
+        keywordResponses = await response.json();
+    } catch (error) {
+        console.error("Failed to load responses from the JSON file: " + error.message);
+    }
 };
+
+loadResponses();
 
 const createChatLi = (message, className) => {
     const chatLi = document.createElement("li");
@@ -25,73 +27,97 @@ const createChatLi = (message, className) => {
     chatLi.innerHTML = chatContent;
     chatLi.querySelector("p").textContent = message;
     return chatLi;
-}
+};
+
+const addShowResponseFunctionality = (messageElement, fullResponse) => {
+    messageElement.style.display = "none";
+
+    const showResponseButton = document.createElement("button");
+    showResponseButton.textContent = "Show Response";
+    showResponseButton.classList.add("show-response-button");
+
+    messageElement.parentNode.insertBefore(showResponseButton, messageElement.nextSibling);
+
+    showResponseButton.addEventListener("click", () => {
+        showResponseButton.style.display = "none";
+        messageElement.style.display = "block";
+    });
+
+    messageElement.textContent = fullResponse;
+};
 
 const generateResponse = (chatElement) => {
     const API_URL = "https://api.openai.com/v1/chat/completions";
     const messageElement = chatElement.querySelector("p");
 
-    const predefinedResponse = predefinedResponses[userMessage];
+    const predefinedResponse = keywordResponses[userMessage];
     if (predefinedResponse) {
-        messageElement.textContent = predefinedResponse;
+        addShowResponseFunctionality(messageElement, predefinedResponse);
         chatbox.scrollTo(0, chatbox.scrollHeight);
     } else {
-      
         const requestOptions = {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${API_KEY}`
+                "Authorization": `Bearer ${API_KEY}`,
             },
             body: JSON.stringify({
                 model: "gpt-3.5-turbo",
                 messages: [{ role: "user", content: userMessage }],
-            })
-        }
-
-
+            }),
+        };
         fetch(API_URL, requestOptions)
-            .then(res => res.json())
-            .then(data => {
-                messageElement.textContent = data.choices[0].message.content.trim();
-                
+            .then((res) => res.json())
+            .then((data) => {
+                const responseData = data.choices[0].message.content.trim();
+                if (responseData === "Oops!") {
+                    const fallbackResponse = keywordResponses["fallback"];
+                    addShowResponseFunctionality(messageElement, fallbackResponse);
+                } else {
+                    messageElement.textContent = responseData;
+                }
             })
             .catch(() => {
                 messageElement.classList.add("error");
-                messageElement.textContent = "Oops! Something went wrong.";
+                messageElement.textContent =  "Oops!, I couldn't find a specific response to your query. If you have any other questions or need assistance with GST-related topics, feel free to ask."
             })
             .finally(() => chatbox.scrollTo(0, chatbox.scrollHeight));
     }
-}
+};
+
 
 const handleChat = () => {
-    userMessage = chatInput.value.trim(); 
+    userMessage = chatInput.value.trim().toLowerCase();
     if (!userMessage) return;
 
-  
     chatInput.value = "";
     chatInput.style.height = `${inputInitHeight}px`;
 
     chatbox.appendChild(createChatLi(userMessage, "outgoing"));
     chatbox.scrollTo(0, chatbox.scrollHeight);
 
-    setTimeout(() => {
- 
-        const incomingChatLi = createChatLi("Thinking....", "incoming");
-        chatbox.appendChild(incomingChatLi);
-        chatbox.scrollTo(0, chatbox.scrollHeight);
-        generateResponse(incomingChatLi);
-    }, 600);
-}
+    for (const keyword in keywordResponses) {
+        if (userMessage.includes(keyword.toLowerCase())) {
+            const keywordResponse = keywordResponses[keyword];
+            const incomingChatLi = createChatLi(keywordResponse, "incoming");
+            chatbox.appendChild(incomingChatLi);
+            chatbox.scrollTo(0, chatbox.scrollHeight);
+            return;
+        }
+    }
+
+    const incomingChatLi = createChatLi("Thinking....", "incoming");
+    chatbox.appendChild(incomingChatLi);
+    chatbox.scrollTo(0, chatbox.scrollHeight);
+    generateResponse(incomingChatLi);
+};
 
 chatInput.addEventListener("input", () => {
-   
     chatInput.style.height = `${inputInitHeight}px`;
     chatInput.style.height = `${chatInput.scrollHeight}px`;
 });
 
 chatInput.addEventListener("keydown", (e) => {
-
     if (e.key === "Enter" && !e.shiftKey && window.innerWidth > 800) {
         e.preventDefault();
         handleChat();
