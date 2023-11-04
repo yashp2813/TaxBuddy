@@ -132,7 +132,8 @@
     "goods": "Goods is determined by the HSN (Harmonized System of Nomenclature) code that categorizes products for taxation.",
     "tsec":"Thadomal Shahani Engineering College is a private engineering college in Mumbai, India. Founded in 1983, it is the first and the oldest private engineering institute affiliated with the University of Mumbai. TSEC was founded by the Hyderabad National Collegiate Board in the year 1983.",
     "exporters": "Exporters have specific rules, including provisions for claiming refunds on export-related taxes.",
-    "importers": "Importers need to understand the implications on imports, including the IGST component.","Yash Mishra":"Boondi Poacher",
+    "importers": "Importers need to understand the implications on imports, including the IGST component.",
+    "Mishra Yash":"Boondi Poacher",
     "manufacturers": "Manufacturers may have unique challenges and compliance requirements based on their production processes.",
     "retailers": "Retailers need to comply with specific rules related to sales, input tax credits, and invoices.",
     "service providers": "Service providers may have different rates and rules depending on the type of service they offer.",
@@ -141,5 +142,6 @@
     "software services": "The rate on software services can vary based on factors such as software type and usage.",
     "transportation": "The rate on transportation services can differ based on the mode of transport and other factors.",
     "construction": "The construction industry has specific rules, including those related to under-construction properties.",
-    "exports and SEZ": "Special Economic Zones (SEZ) have unique rules and benefits related to exports."
+    "exports and SEZ": "Special Economic Zones (SEZ) have unique rules and benefits related to exports.",
+    "Tiger Shroff":"Boondi Poacher"
 }
