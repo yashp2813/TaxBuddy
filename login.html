@@ -8,14 +8,14 @@
 </head>
 <body>
   <div class="wrapper">
-    <form action="#">
+    <form onsubmit="return validateForm()">
       <h2>Login</h2>
       <div class="input-field">
-        <input type="text" required>
+        <input type="text" id="email" required>
         <label>Enter your email</label>
       </div>
       <div class="input-field">
-        <input type="password" required>
+        <input type="password" id="password" required>
         <label>Enter your password</label>
       </div>
       <div class="forget">
@@ -23,12 +23,32 @@
           <input type="checkbox" id="remember">
           <p>Remember me</p>
         </label>
-        <a href="#">Forgot password?</a>
+        <a href="#" id="forgotPasswordLink">Forgot password?</a>
       </div>
       <button type="submit">Log In</button>
       <div class="register">
       </div>
     </form>
   </div>
+
+  <script>
+    function validateForm() {
+      var email = document.getElementById("email").value;
+      var password = document.getElementById("password").value;
+
+      if (email === "example@gmail.com" && password === "password") {
+        window.location.href = "./Admin-Dashboard-Modern-master/Admin-Dashboard-Modern-master/index.html";
+        return false;
+      } else {
+        alert("Invalid email or password");
+        return false;
+      }
+    }
+
+    document.getElementById("forgotPasswordLink").addEventListener("click", function(event) {
+      event.preventDefault();
+      alert("Your fault ni*ga. Can't even remeber a f**king 8 letter password.\nAsk the chatbot he can help you with password reset process.");
+    });
+  </script>
 </body>
 </html>
