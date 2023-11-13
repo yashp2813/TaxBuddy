@@ -13,9 +13,6 @@
 
 <body class="hide-content">
     <header>
-        <div id="loading-screen">
-            <img src="diwali1.gif" alt="Loading..." />
-        </div>
         <nav class="navbar">
             <a class="logo" href="./index.html">TaxBuddy<span>.</span></a>
             <ul class="menu-links">
@@ -62,12 +59,6 @@
     </section>
     
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const loadingScreen = document.getElementById("loading-screen");
-            setTimeout(function () {
-                loadingScreen.style.display = "none";
-            }, 4000);
-        });
         const header = document.querySelector("header");
         const hamburgerBtn = document.querySelector("#hamburger-btn");
         const closeMenuBtn = document.querySelector("#close-menu-btn");
